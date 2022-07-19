@@ -11,7 +11,7 @@ const CreateTask = ({ handleSubmit, description, setDescription }) => {
 					value = {description}
 					onChange = { (e) => setDescription(e.target.value) }
 					/>
-				<button type='submit'>Submit</button>
+				<button type='submit'>Add Todo</button>
 			</form>
 		</div>
 	)
