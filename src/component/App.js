@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 // style
 import '../styles/App.css'
@@ -7,32 +7,28 @@ import '../styles/App.css'
 import TodoList from './TodoList'
 import CreateTask from './CreateTask'
 
+
 const App = () => {
+  // local storage key
+  const LOCAL_STORAGE_KEY = "react-todo-list"
+
   const [description, setDescription] = useState('')
-  const [todos, setTodos] = useState(
-      [
-        {
-          id: 1,
-          description: "walk the earth",
-          completed: false
-        },
-        {
-          id: 2,
-          description: "cook meal",
-          completed: false
-        },
-        {
-          id: 3,
-          description: "15 mins excercise",
-          completed: false
-        }
-      ]
-    )
-  
+  const [todos, setTodos] = useState(()=> {
+    const savedData= JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY))
+    if(savedData){
+      return savedData || ''
+    }
+  })
   const [editingDescription, setEditingDescription] = useState(null)
   const [todoEditing, setTodoEditing] = useState('')
+  
 
-  const handleSubmit =(e) =>{
+
+  useEffect(()=>{
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(todos))
+  },[todos])
+
+  const addTodo =(e) =>{
     e.preventDefault()
 
     const newTodo = {
@@ -41,9 +37,10 @@ const App = () => {
       completed : false
     }
 
-    setTodos([...todos].concat(newTodo))
+    setTodos([newTodo, ...todos])
     setDescription('')
   }
+
 
   const handleDelete = (id) => {
     const updatedTodos = [...todos].filter((todo) => todo.id !== id)
@@ -77,7 +74,7 @@ const App = () => {
       <div className="wrapper">
         
         <CreateTask 
-          handleSubmit={handleSubmit} 
+          addTodo={addTodo} 
           description={description} 
           setDescription={setDescription}  />
 

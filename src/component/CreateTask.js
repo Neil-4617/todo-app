@@ -1,10 +1,8 @@
-import { useState } from 'react'
-
-const CreateTask = ({ handleSubmit, description, setDescription }) => {
+const CreateTask = ({ addTodo, description, setDescription }) => {
 
 	return(
 		<div>
-			<form onSubmit={handleSubmit} >
+			<form onSubmit={addTodo} >
 				<input	
 					type='text'
 					placeholder="enter a new task..."

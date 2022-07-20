@@ -1,9 +1,14 @@
+// style
+import '../styles/App.css'
+
 const TodoList = ({todos, handleDelete, handleEdit, toggleComplete, setTodoEditing, todoEditing, setEditingDescription}) => {
 
 
 	return(	
 		<>
-		<h2>Todo List</h2>
+		<div>
+			<h2>Todo List</h2>
+		</div>
 		<div>
 			{
 				todos.map((todo)=>
