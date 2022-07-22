@@ -1,3 +1,7 @@
+// Maaterial UI
+import Container from '@mui/material/Container'
+import Box from '@mui/material/Box'
+
 import { useState, useEffect } from 'react'
 
 // style
@@ -14,12 +18,14 @@ const App = () => {
 
   const [description, setDescription] = useState('')
   const [todos, setTodos] = useState(()=> {
+    // check data from local storage
     const savedData= JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY))
     if(savedData){
       return savedData || ''
     }
   })
-  const [editingDescription, setEditingDescription] = useState(null)
+  const [formError, setFormError] = useState(false)
+  const [editingDescription, setEditingDescription] = useState('')
   const [todoEditing, setTodoEditing] = useState('')
   
 
@@ -31,16 +37,21 @@ const App = () => {
   const addTodo =(e) =>{
     e.preventDefault()
 
+    if(description.length !== 0) {
+
     const newTodo = {
       id: new Date().getTime(),
       description: description,
       completed : false
     }
-
-    setTodos([newTodo, ...todos])
+    setTodos([...todos, newTodo])
     setDescription('')
+    setFormError(false)
+    }
+    else {
+      setFormError(true)
+    }
   }
-
 
   const handleDelete = (id) => {
     const updatedTodos = [...todos].filter((todo) => todo.id !== id)
@@ -57,29 +68,42 @@ const App = () => {
     setTodos(updatedTodos)
   } 
 
-  const handleEdit = (id) => {  
+  const handleEdit = (id) => {
     const updatedTodos = [...todos].map((todo)=>{
       if(todo.id === id) {
-        todo.description = editingDescription
+        if(editingDescription.length !== 0) {
+          todo.description = editingDescription
+        }
+        setEditingDescription(todo.description)
       } 
       return todo
     }) 
     setTodos(updatedTodos)
     setTodoEditing('')
-    setEditingDescription(null)
+    setEditingDescription('')
   }
 
   return(
-    <div className="container">
-      <div className="wrapper">
-        
-        <CreateTask 
-          addTodo={addTodo} 
-          description={description} 
-          setDescription={setDescription}  />
-
-        <div className="tasklist">
-          
+    <Container
+      sx={{
+        minHeight: '100vh',
+        display:'flex',
+        justifyContent:"center",
+        alingItems: 'center'
+      }}>
+      <Box
+        sx={{
+          maxWidth:'80vw',
+          minwidth:'30vw',
+          margin: 'auto',
+          padding: '2rem'
+        }}>
+          <CreateTask 
+            addTodo={addTodo} 
+            formError={formError}
+            description={description} 
+            setDescription={setDescription}  />
+            
           <TodoList 
             todos={todos} 
             handleDelete={handleDelete} 
@@ -89,10 +113,8 @@ const App = () => {
             todoEditing = {todoEditing}
             setTodoEditing = {setTodoEditing}
           />
-
-        </div>
-      </div>
-    </div>
+      </Box>
+    </Container>
   )
 }
 export default App;
