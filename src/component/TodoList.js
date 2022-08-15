@@ -27,9 +27,9 @@ const TodoList = ({
 	return(
 		<>	
 			<Card sx={{ padding:'2rem', textAlign:'center' }}>
-			<Typography variant="h6">Todo List</Typography>
+			<Typography variant="h5" marginBottom= '1rem'>Todo List</Typography>
 			{	
-				todos.map((todo)=>
+				todos.length === 0 ? (<Typography variant='subtitle' color='text.secondary' >Ready to start the day?</Typography>) : (todos.map(todo=>(
 						<CardContent
 							key={todo.id}
 							sx={{
@@ -38,7 +38,7 @@ const TodoList = ({
 							}}
 							>
 							<Checkbox
-								checked={todo.completed}
+								checked={ todo.completed }
 								onChange = {()=> toggleComplete(todo.id)}
 							/>
 							{ 
@@ -62,8 +62,9 @@ const TodoList = ({
 									: <IconButton variant="contained" color="warning" onClick={(e) => setTodoEditing(todo.id)}><EditIcon /></IconButton>
 								}
 						</CardContent>
-					)
+					)))
 			}
+
 			</Card>
         </>
 	)

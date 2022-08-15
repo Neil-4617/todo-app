@@ -16,14 +16,16 @@ const App = () => {
   // local storage key
   const LOCAL_STORAGE_KEY = "react-todo-list"
 
-  const [description, setDescription] = useState('')
-  const [todos, setTodos] = useState(()=> {
+  const localData = ()=> {
     // check data from local storage
-    const savedData= JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY))
-    if(savedData){
-      return savedData || ''
+    if (localStorage.getItem(LOCAL_STORAGE_KEY)){
+      const savedData= JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY))
+      return savedData || []
     }
-  })
+  }
+
+  const [description, setDescription] = useState('')
+  const [todos, setTodos] = useState(localData)
   const [formError, setFormError] = useState(false)
   const [editingDescription, setEditingDescription] = useState('')
   const [todoEditing, setTodoEditing] = useState('')
@@ -37,16 +39,18 @@ const App = () => {
   const addTodo =(e) =>{
     e.preventDefault()
 
+
     if(description.length !== 0) {
 
-    const newTodo = {
-      id: new Date().getTime(),
-      description: description,
-      completed : false
-    }
-    setTodos([...todos, newTodo])
-    setDescription('')
-    setFormError(false)
+      const newTodo = {
+        id: new Date().getTime(),
+        description: description,
+        completed : false,
+      }
+      
+      setTodos([...todos, newTodo])
+      setDescription('')
+      setFormError(false)
     }
     else {
       setFormError(true)

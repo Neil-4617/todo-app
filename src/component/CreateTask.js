@@ -25,7 +25,6 @@ const CreateTask = ({ addTodo, formError, description, setDescription }) => {
 					helperText={ formError ? "Incorrect Entry." : " "  }
 					/>
 				<IconButton type='submit' variant='contained' color='primary'><AddIcon /></IconButton>
-			
 		</Box>
 	)
 }
